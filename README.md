@@ -38,8 +38,8 @@ These scripts run the main experiments described in the paper:
 ### 1. Clone the repository
 
 ```bash
-git clone <repository_url>
-cd <repository_folder>
+git clone https://github.com/dsrestrepo/context-distortion-vlms.git
+cd context-distortion-vlms
 ```
 
 ### 2. Set up environments
