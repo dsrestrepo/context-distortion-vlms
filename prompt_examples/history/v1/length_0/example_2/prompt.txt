@@ -1,0 +1,37 @@
+You are assisting in a radiology review task. Follow these steps carefully:
+
+1) Examine the chest X-ray image.
+2) Review prior radiology reports if any:
+No prior report
+
+3) Review the current chest X-ray report (Study Date: 2024-10-05):
+                                 FINAL REPORT
+ EXAMINATION:  CHEST (PORTABLE AP)
+ 
+ INDICATION:  History: ___M status post bone marrow transplant with fever,
+ diarrhea, cough
+ 
+ TECHNIQUE:  Portable upright AP view of the chest
+ 
+ COMPARISON:  Chest radiograph ___ and chest CT ___
+ 
+ FINDINGS: 
+ 
+ Lung volumes are low.  Heart size is normal.  The aorta remains mildly
+ tortuous.  Mediastinal and hilar contours are unremarkable.  Streaky
+ atelectasis is demonstrated in both lung bases, more pronounced on the left. 
+ No focal consolidation, pleural effusion, or pneumothorax is present. 
+ Pulmonary vasculature is not engorged.  Known soft tissue lesion involving the
+ left seventh anterolateral rib likely accounts for the somewhat triangular
+ opacity projecting over the left costophrenic angle, better assessed on the
+ previous CT.
+ 
+ IMPRESSION: 
+ 
+ Bibasilar atelectasis and low lung volumes.
+
+
+Now integrate the image with the textual context to decide whether the case shows **any** of:
+Atelectasis, Cardiomegaly, Consolidation, Edema, Pleural Effusion.
+
+Reply with only **"yes"** if any are present, or **"no"** if none are detected. No additional commentary or reasoning.

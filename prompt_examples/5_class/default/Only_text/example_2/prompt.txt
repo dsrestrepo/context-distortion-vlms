@@ -1,0 +1,37 @@
+
+Patient Information:
+- Age: 70.0
+- Sex: Male
+- Race: White
+- ViewPosition: AP
+- Procedure description: CHEST (PORTABLE AP)
+- Summary:                                  FINAL REPORT
+ EXAMINATION:  CHEST RADIOGRAPH
+ 
+ INDICATION:  ___ ___ ___'s disease with large right frontal mass and
+ midline shift with acute altered mental status. Status post craniotomy and
+ resection.
+ 
+ TECHNIQUE:  Chest, portable AP upright.
+ 
+ COMPARISON:
+ ___.
+ 
+ FINDINGS: 
+ 
+ Left subclavian central venous catheter terminates in the lower superior vena
+ cava. A nasogastric tube terminates in the stomach. The lung volumes are low.
+ The cardiac, mediastinal and hilar contours appear stable. Minimal opacities
+ at each lung base suggest minor atelectasis. Otherwise, the lungs appear
+ clear. High density material in the visualized transverse and splenic flexure
+ portions of the colon suggests a recent prior contrast administration for a
+ radiologic study. Small quantity of hyperdense material at the base of the
+ right lung may represent trace prior aspiration of barium.
+ 
+ IMPRESSION: 
+ 
+ No evidence of acute cardiopulmonary disease.
+
+
+Based on the provided patient information, does the patient have any of the following conditions: **Atelectasis**, **Cardiomegaly**, **Consolidation**, **Edema**, or **Pleural Effusion**?
+Your response must be "Yes" if any of the specified conditions is detected or "No" if none of the specified conditions is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).

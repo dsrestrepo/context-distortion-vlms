@@ -1,0 +1,69 @@
+You are an expert chest-radiology assistant.
+
+Prior reports:
+[Report Date: 2023-06-21]
+EXAMINATION: Chest, PA upright frontal radiograph.
+
+INDICATION: Routine evaluation / prior baseline.
+
+TECHNIQUE: PA upright frontal chest radiograph.
+
+COMPARISON: None available.
+
+FINDINGS: Cardiomediastinal silhouette within normal size limits. Lungs clear without focal airspace consolidation or interstitial edema. No pleural effusion identified. No pneumothorax. No acute osseous abnormality.
+
+IMPRESSION: No acute cardiopulmonary disease.
+--- --- ---
+[Report Date: 2023-07-11]
+EXAMINATION: CT ABDOMEN AND PELVIS WITH CONTRAST
+
+INDICATION: __-year-old with abdominal pain.
+
+TECHNIQUE: Contrast-enhanced CT of the abdomen and pelvis performed in the portal venous phase following IV contrast administration. Oral contrast not administered.
+
+COMPARISON: None available.
+
+FINDINGS: Liver, spleen, pancreas, and adrenal glands are normal in size and attenuation without focal lesion. Kidneys demonstrate normal enhancement bilaterally; no hydronephrosis or obstructing calculi identified. Bowel loops demonstrate normal caliber without wall thickening or pneumatosis. No free intraperitoneal air or loculated fluid. No suspicious lymphadenopathy. Visualized osseous structures without acute abnormality.
+
+IMPRESSION:
+1. No acute abdominal or pelvic abnormality identified on contrast-enhanced CT.
+2. Solid organs, bowel, and urinary collecting systems unremarkable for acute process.
+--- --- ---
+[Report Date: 2023-06-30]
+EXAMINATION: MRI BRAIN WITH AND WITHOUT CONTRAST
+
+INDICATION: __-year-old with new-onset headache and transient neurologic symptoms.
+
+TECHNIQUE: Multiplanar sequences including T1, T2, FLAIR, diffusion-weighted imaging (DWI/ADC), susceptibility-weighted imaging (SWI), and post-contrast T1 sequences following intravenous gadolinium administration.
+
+COMPARISON: None available.
+
+FINDINGS: The cerebral hemispheres, deep gray nuclei, brainstem, and cerebellum demonstrate expected morphology and signal characteristics for age. Ventricular system and sulci are within normal size limits. No areas of abnormal T2/FLAIR signal, restricted diffusion, susceptibility to suggest hemorrhage, or abnormal parenchymal or leptomeningeal enhancement. No extra-axial fluid collection or mass effect.
+
+IMPRESSION:
+1. No acute intracranial abnormality identified. Normal appearance of the brain on MRI with and without contrast.
+
+Current chest X-ray report (Study Date: 2024-01-23):
+                                 FINAL REPORT
+ INDICATION:  Acute eosinophilic pneumonia.
+ 
+ COMPARISON:  Chest radiograph from ___.
+ 
+ TECHNIQUE:  Frontal chest radiograph.
+ 
+ FINDINGS: 
+ 
+ An endotracheal tube is unchanged in position. A transesophageal catheter
+ terminates within the stomach. The heart size is normal.  There is slightly
+ improved aeration of the lungs in comparison to the ___
+ examination. A small left pleural effusion remains stable.  There is no
+ superimposed pneumothorax.
+ 
+ IMPRESSION: 
+ 
+ Slight improvement of bilateral consolidations with improved pulmonary
+ aeration.
+
+
+Based on the provided patient information and the associated chest X-ray image, does the patient have any of the following conditions: **Atelectasis**, **Cardiomegaly**, **Consolidation**, **Edema**, or **Pleural Effusion**?
+Your response must be "Yes" if any of the specified conditions is detected or "No" if none of the specified conditions is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).

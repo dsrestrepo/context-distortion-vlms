@@ -1,0 +1,71 @@
+=== RADIOLOGY CHECK REQUEST ===
+
+PRIOR REPORTS:
+[Report Date: 2022-12-15]
+EXAMINATION: Chest, frontal and lateral views
+
+INDICATION: __-year-old female, evaluation for infiltrate.
+
+TECHNIQUE: Frontal and lateral radiographs of the chest.
+
+COMPARISON: None available.
+
+FINDINGS:
+Cardiomediastinal silhouette within normal size limits for technique. Lungs clear without focal air‑space consolidation. No interstitial pulmonary vascular congestion identified. No pleural effusion. No acute osseous abnormality identified.
+
+IMPRESSION:
+1. No acute cardiopulmonary disease identified.
+2. Cardiomediastinal size within expected limits. No consolidation, edema, or pleural effusion.
+--- --- ---
+[Report Date: 2023-03-14]
+EXAMINATION: CT Abdomen and Pelvis with contrast
+
+INDICATION: __-year-old with abdominal pain; rule out intra-abdominal process.
+
+TECHNIQUE: Contrast-enhanced CT of the abdomen and pelvis obtained following intravenous iodinated contrast administration; axial images with multiplanar reformats.
+
+COMPARISON: None available.
+
+FINDINGS: Liver, spleen, pancreas, and adrenals show normal size and morphology without focal lesion. Gallbladder and biliary tree not dilated. Kidneys symmetric in size with intact corticomedullary differentiation; no hydronephrosis or obstructing calculus identified. Bowel loops are non-dilated without wall thickening or focal inflammatory change. No free intraperitoneal air or significant free fluid. No pathologic lymphadenopathy. Visualized osseous structures unremarkable.
+
+IMPRESSION:
+1. No acute abdominal or pelvic abnormality identified on contrast-enhanced CT.
+2. No focal organ lesion, bowel obstruction, free air, or free fluid.
+
+CURRENT STUDY (Study Date: 2024-01-09):
+                                 FINAL REPORT
+ EXAMINATION:
+ Chest:  Frontal and lateral views
+ 
+ INDICATION:  History: ___F with diarrhea  // eval for infiltrate
+ 
+ TECHNIQUE:  Chest:  Frontal and Lateral
+ 
+ COMPARISON:  ___
+ 
+ FINDINGS: 
+ 
+ Increased interstitial markings are again seen bilaterally, grossly similar as
+ compared to the prior study, consistent with mild to moderate pulmonary
+ vascular congestion. No pleural effusion is seen currently.  The cardiac
+ silhouette remains mild to moderately enlarged.  Mediastinal contours are
+ stable.  No focal consolidation is seen.
+ 
+ IMPRESSION: 
+ 
+ Mild to moderate pulmonary vascular congestion again seen, similar to prior. 
+ No definite pleural effusion seen on the current study.  Persistent
+ cardiomegaly.
+
+
+Instructions:
+Review the chest X-ray image and, using the reports above only as supporting context, confirm whether **any** of the following are present:
+→ Atelectasis
+→ Cardiomegaly
+→ Consolidation
+→ Edema
+→ Pleural Effusion
+
+Respond with a single word:
+- **"yes"** if one or more conditions are present
+- **"no"** if none are present. No additional commentary or reasoning.

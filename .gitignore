@@ -1,0 +1,161 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+*.env
+*.venv
+._*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# PyCharm or VSCode settings
+.idea/
+.vscode/
+
+# Logs and runtime files
+*.log
+*.pid
+*.sqlite3
+
+# dotenv environment variables
+.env
+.env.*
+
+# MyPy
+.mypy_cache/
+
+# Pyre type checker
+.pyre/
+
+# Pytype
+.pytype/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+.cache
+nosetests.xml
+coverage/
+
+# Ignore all folders and files starting with attentions...
+attentions*/
+# But allow exactly the folder attentions/ and its content
+!attentions/
+!attentions/**
+
+# Other temporary files
+*.bak
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# Ignore csv files
+*.csv
+!results/*/*.csv
+
+# ----------------------------
+# Ignore notebooks and .py files in root,
+# except specific ones
+# ----------------------------
+# Ignore all .ipynb and .py in root
+/*.ipynb
+/*.py
+
+# Core scripts
+!eval_general_vlms_5class.py
+!eval_general_vlms_history.py
+!eval_gemini_5class.py
+!eval_gemini_history.py
+!eval_g_openai_5class.py
+!eval_g_openai_history.py
+!eval_llavamed_5class.py
+!eval_llavamed_history.py
+!merge_csv_files.py
+!utils.py
+
+# Analysis notebooks
+!multi_prompt_eval_mimic-5class.ipynb
+!multi_prompt_eval_mimic-multi-history.ipynb
+
+# ----------------------------
+# Ignore all .out and .sh files in root,
+# except specific job scripts
+# ----------------------------
+/*.out
+/*.sh
+
+# Core job scripts
+!job.sh
+!job_history_report.sh
+!job_gemini_5class.sh
+!job_gemini_history.sh
+!job_openai_5class.sh
+!job_openai_history.sh
+
+
+# Ignore large model checkpoints
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.h5
+*.pb
+
+# Ignore Hugging Face / Transformers models
+*.safetensors
+*.onnx
+*.tflite
+
+# Ignore logs, outputs
+*.log
+*.out
+
+# Ignore datasets and model outputs
+*.npz
+*.npy
+*.tar
+*.tar.gz
+*.zip
+*.7z
+
+# Ignore LFS cache
+.git/lfs/
+
+# If not using submodules, ignore entire submodule folder
+MedVersa_Internal/
+
+# Ignore .json files
+*.json
+
+# Ignore .tex files
+*.tex
+
+# Ignore all the files in notebooks/ except llava-med_visualization.ipynb
+notebooks/*
+!notebooks/llava-med_visualization.ipynb
+
+
+# Ignore results/
+results/*

@@ -1,0 +1,30 @@
+
+You are assisting in a radiology review task. Follow these steps carefully:
+
+1. Examine the chest X-ray image.
+2. Review the following patient details:
+   - Age: 59.0
+   - Sex: Female
+   - Race: White
+   - View position: PA
+   - Procedure: CHEST (PA AND LAT)
+3. Read the radiology summary below:
+   "                                 FINAL REPORT
+ CHEST RADIOGRAPH PERFORMED ON ___
+ 
+ COMPARISON:  Prior exam from ___.
+ 
+ CLINICAL HISTORY:  Left flank pain, assess pneumonia.
+ 
+ FINDINGS:  PA and lateral views of the chest were provided.  The lungs appear
+ clear.  There is blunting of the right costophrenic angle which is concerning
+ for a small pleural effusion.  The cardiomediastinal silhouette appears
+ normal.  No bony abnormalities.  No free air below the right hemidiaphragm.
+ 
+ IMPRESSION:  Tiny right pleural effusion.  Otherwise, unremarkable.
+"
+
+Now integrate visual and textual information, giving priority to the image, to decide whether the case shows **any** of the following:
+Atelectasis, Cardiomegaly, Consolidation, Edema, Pleural Effusion.
+
+Reply with only **"yes"** if any are present, or **"no"** if none are detected. No additional commentary or reasoning.

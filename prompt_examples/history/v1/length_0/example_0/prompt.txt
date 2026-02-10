@@ -1,0 +1,36 @@
+You are assisting in a radiology review task. Follow these steps carefully:
+
+1) Examine the chest X-ray image.
+2) Review prior radiology reports if any:
+No prior report
+
+3) Review the current chest X-ray report (Study Date: 2024-03-14):
+                                 FINAL REPORT
+ EXAMINATION:
+ Chest:  Frontal and lateral views
+ 
+ INDICATION:  History: ___F with diarrhea  // eval for infiltrate
+ 
+ TECHNIQUE:  Chest:  Frontal and Lateral
+ 
+ COMPARISON:  ___
+ 
+ FINDINGS: 
+ 
+ Increased interstitial markings are again seen bilaterally, grossly similar as
+ compared to the prior study, consistent with mild to moderate pulmonary
+ vascular congestion. No pleural effusion is seen currently.  The cardiac
+ silhouette remains mild to moderately enlarged.  Mediastinal contours are
+ stable.  No focal consolidation is seen.
+ 
+ IMPRESSION: 
+ 
+ Mild to moderate pulmonary vascular congestion again seen, similar to prior. 
+ No definite pleural effusion seen on the current study.  Persistent
+ cardiomegaly.
+
+
+Now integrate the image with the textual context to decide whether the case shows **any** of:
+Atelectasis, Cardiomegaly, Consolidation, Edema, Pleural Effusion.
+
+Reply with only **"yes"** if any are present, or **"no"** if none are detected. No additional commentary or reasoning.

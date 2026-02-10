@@ -1,0 +1,34 @@
+
+You are assisting in a radiology review task. Follow these steps carefully:
+
+1. Review the following patient details:
+   - Age: 81.0
+   - Sex: Male
+   - Race: White
+   - View position: PA
+   - Procedure: CHEST (PA AND LAT)
+2. Read the radiology summary below:
+   "                                 FINAL REPORT
+ EXAMINATION:  CHEST (PA AND LAT)
+ 
+ INDICATION:  ___ year old man with pmhx of DM, HTN, HL who presents with
+ substernal chest burning, mild shortness of breath and cough for several hr.
+ 
+ TECHNIQUE:  Chest PA and lateral
+ 
+ COMPARISON:  ___
+ 
+ FINDINGS: 
+ 
+ The lungs are clear.The cardiac, hilar and mediastinal contours are normal.No
+ pleural abnormality is seen.
+ 
+ IMPRESSION: 
+ 
+ No acute cardiopulmonary process.
+"
+
+Now decide whether the case shows **any** of the following:
+Atelectasis, Cardiomegaly, Consolidation, Edema, Pleural Effusion.
+
+Reply with only **"yes"** if any are present, or **"no"** if none are detected. No additional commentary or reasoning.

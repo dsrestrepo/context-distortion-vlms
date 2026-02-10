@@ -1,0 +1,36 @@
+
+You are assisting in a radiology review task. Follow these steps carefully:
+
+1. Examine the chest X-ray image.
+2. Review the following patient details:
+   - Age: 24.0
+   - Sex: Male
+   - Race: White
+   - View position: PA
+   - Procedure: nan
+3. Read the radiology summary below:
+   "                                 FINAL REPORT
+ INDICATION:  ___ year old man with right pneumothorax  // check interval change
+ 
+ TECHNIQUE:  Chest PA and lateral
+ 
+ COMPARISON:  Chest radiograph dated ___.
+ 
+ FINDINGS: 
+ 
+ The lungs are clear.  No pneumothorax.  No pleural abnormalities.  The hila
+ and pulmonary vasculatures are normal.  The heart size is top normal but
+ exaggerated by decreased lung volume.  The mediastinum is normal.  No
+ fractures.
+ 
+ IMPRESSION: 
+ 
+ 1.  No pneumothorax.
+ 
+ 2.  Top-normal heart size exaggerated by decreased lung volume.
+"
+
+Now integrate visual and textual information, giving priority to the image, to decide whether the case shows **any** of the following:
+Atelectasis, Cardiomegaly, Consolidation, Edema, Pleural Effusion.
+
+Reply with only **"yes"** if any are present, or **"no"** if none are detected. No additional commentary or reasoning.

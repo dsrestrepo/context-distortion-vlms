@@ -1,0 +1,49 @@
+You are assisting in a radiology review task. Follow these steps carefully:
+
+1) Examine the chest X-ray image.
+2) Review prior radiology reports if any:
+[Report Date: 2023-02-27]
+EXAMINATION: MRI Brain with and without contrast
+
+INDICATION: __-year-old with headache; evaluation for mass or acute intracranial process.
+
+TECHNIQUE: Multiplanar, multisequence MRI of the brain performed before and after intravenous gadolinium administration. Sequences include axial T1, axial and coronal T2, axial FLAIR, diffusion-weighted imaging with ADC maps, susceptibility-weighted imaging, and post-contrast T1-weighted imaging.
+
+COMPARISON: None available.
+
+FINDINGS: Cerebral sulci, cisterns, and ventricles are within expected size and configuration for age. No focal intra-axial or extra-axial hemorrhage. No restricted diffusion to suggest acute infarct. No abnormal enhancement identified. No mass effect or midline shift. No abnormal susceptibility to suggest hemorrhage or calcification.
+
+IMPRESSION:
+1. MRI brain without and with contrast shows no acute intracranial abnormality.
+2. No mass, acute infarct, hemorrhage, or abnormal enhancement identified.
+
+3) Review the current chest X-ray report (Study Date: 2024-02-25):
+                                 FINAL REPORT
+ EXAMINATION:
+ Chest:  Frontal and lateral views
+ 
+ INDICATION:  History: ___F with diarrhea  // eval for infiltrate
+ 
+ TECHNIQUE:  Chest:  Frontal and Lateral
+ 
+ COMPARISON:  ___
+ 
+ FINDINGS: 
+ 
+ Increased interstitial markings are again seen bilaterally, grossly similar as
+ compared to the prior study, consistent with mild to moderate pulmonary
+ vascular congestion. No pleural effusion is seen currently.  The cardiac
+ silhouette remains mild to moderately enlarged.  Mediastinal contours are
+ stable.  No focal consolidation is seen.
+ 
+ IMPRESSION: 
+ 
+ Mild to moderate pulmonary vascular congestion again seen, similar to prior. 
+ No definite pleural effusion seen on the current study.  Persistent
+ cardiomegaly.
+
+
+Now integrate the image with the textual context to decide whether the case shows **any** of:
+Atelectasis, Cardiomegaly, Consolidation, Edema, Pleural Effusion.
+
+Reply with only **"yes"** if any are present, or **"no"** if none are detected. No additional commentary or reasoning.

@@ -1,0 +1,15 @@
+
+You are performing a structured diagnostic checklist on a chest X-ray.
+
+Diagnostic Checklist. Don't provide the full checklist, just answer the question:
+
+[ ] Atelectasis  
+[ ] Cardiomegaly  
+[ ] Consolidation  
+[ ] Edema  
+[ ] Pleural Effusion
+
+Mark **"yes"** if any of these findings are identified on the X-ray.
+Mark **"no"** if none of them apply.
+
+Final output: only "yes" or "no". No additional reasoning or checklist. Just 'yes' or 'no'.

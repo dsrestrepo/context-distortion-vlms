@@ -1,0 +1,34 @@
+You are an expert chest-radiology assistant.
+
+Prior reports:
+No prior report
+
+Current chest X-ray report (Study Date: 2024-11-05):
+                                 FINAL REPORT
+ EXAMINATION:  CHEST (PORTABLE AP)
+ 
+ INDICATION:  History: ___M status post bone marrow transplant with fever,
+ diarrhea, cough
+ 
+ TECHNIQUE:  Portable upright AP view of the chest
+ 
+ COMPARISON:  Chest radiograph ___ and chest CT ___
+ 
+ FINDINGS: 
+ 
+ Lung volumes are low.  Heart size is normal.  The aorta remains mildly
+ tortuous.  Mediastinal and hilar contours are unremarkable.  Streaky
+ atelectasis is demonstrated in both lung bases, more pronounced on the left. 
+ No focal consolidation, pleural effusion, or pneumothorax is present. 
+ Pulmonary vasculature is not engorged.  Known soft tissue lesion involving the
+ left seventh anterolateral rib likely accounts for the somewhat triangular
+ opacity projecting over the left costophrenic angle, better assessed on the
+ previous CT.
+ 
+ IMPRESSION: 
+ 
+ Bibasilar atelectasis and low lung volumes.
+
+
+Based on the provided patient information and the associated chest X-ray image, does the patient have any of the following conditions: **Atelectasis**, **Cardiomegaly**, **Consolidation**, **Edema**, or **Pleural Effusion**?
+Your response must be "Yes" if any of the specified conditions is detected or "No" if none of the specified conditions is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).

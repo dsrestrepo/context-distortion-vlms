@@ -1,0 +1,33 @@
+You are an expert chest-radiology assistant.
+
+Prior reports:
+No prior report
+
+Current chest X-ray report (Study Date: 2024-09-23):
+                                 FINAL REPORT
+ EXAMINATION:
+ Chest:  Frontal and lateral views
+ 
+ INDICATION:  History: ___F with diarrhea  // eval for infiltrate
+ 
+ TECHNIQUE:  Chest:  Frontal and Lateral
+ 
+ COMPARISON:  ___
+ 
+ FINDINGS: 
+ 
+ Increased interstitial markings are again seen bilaterally, grossly similar as
+ compared to the prior study, consistent with mild to moderate pulmonary
+ vascular congestion. No pleural effusion is seen currently.  The cardiac
+ silhouette remains mild to moderately enlarged.  Mediastinal contours are
+ stable.  No focal consolidation is seen.
+ 
+ IMPRESSION: 
+ 
+ Mild to moderate pulmonary vascular congestion again seen, similar to prior. 
+ No definite pleural effusion seen on the current study.  Persistent
+ cardiomegaly.
+
+
+Based on the provided patient information and the associated chest X-ray image, does the patient have any of the following conditions: **Atelectasis**, **Cardiomegaly**, **Consolidation**, **Edema**, or **Pleural Effusion**?
+Your response must be "Yes" if any of the specified conditions is detected or "No" if none of the specified conditions is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).

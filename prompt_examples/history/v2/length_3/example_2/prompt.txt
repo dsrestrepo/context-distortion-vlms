@@ -1,0 +1,84 @@
+=== RADIOLOGY CHECK REQUEST ===
+
+PRIOR REPORTS:
+[Report Date: 2024-01-18]
+EXAMINATION: MRI BRAIN WITH AND WITHOUT CONTRAST
+
+INDICATION: __-year-old with headache and new-onset dizziness.
+
+TECHNIQUE: Multiplanar T1, T2, FLAIR, diffusion-weighted imaging, susceptibility-weighted imaging, and post-contrast T1 sequences were obtained following administration of gadolinium-based IV contrast.
+
+COMPARISON: None available.
+
+FINDINGS: Brain size and morphology within expected limits for age. Ventricular system and basal cisterns are normal in size and contour. No acute ischemia on diffusion imaging. No intraparenchymal hemorrhage on susceptibility sequences. No mass lesion or abnormal extra-axial collection identified. No abnormal parenchymal or meningeal enhancement. Major flow voids preserved.
+
+IMPRESSION: 
+1. MRI brain with and without contrast demonstrates no acute intracranial abnormality. 
+2. No mass, hemorrhage, acute infarct, or abnormal enhancement identified.
+--- --- ---
+[Report Date: 2024-02-12]
+EXAMINATION: WRIST ULTRASOUND
+
+INDICATION: __-year-old with right wrist pain following minor trauma; assess for tendon injury and effusion.
+
+TECHNIQUE: High-frequency linear transducer evaluation of the dorsal and volar wrist, including extensor and flexor tendons, radial and ulnar gutters, and distal radioulnar joint. Dynamic imaging performed. Color Doppler assessment of vascularity.
+
+COMPARISON: None available.
+
+FINDINGS: Extensor and flexor tendons are intact without discontinuity or focal thickening. No tendon subluxation on dynamic imaging. No fluid collection identified in the wrist joint, tendon sheaths, or along the distal radioulnar joint. No sonographic evidence of tenosynovitis or hyperemia on color Doppler. Bones visualized at the cortical surface demonstrate normal contour without step-off.
+
+IMPRESSION:
+1. No sonographic evidence of wrist tendon tear, tenosynovitis, or joint effusion.
+2. No focal fluid collection identified.
+--- --- ---
+[Report Date: 2023-10-15]
+EXAMINATION: Chest radiograph, PA and lateral.
+
+INDICATION: ___M status post bone marrow transplant; baseline/pre-procedure evaluation.
+
+TECHNIQUE: PA upright and lateral views.
+
+COMPARISON: None available.
+
+FINDINGS: Cardiomediastinal silhouette within normal size and contour for technique. Lungs clear without focal air‑space consolidation. No pleural effusion. No pneumothorax. No acute osseous abnormality identified.
+
+IMPRESSION: No acute cardiopulmonary disease. Normal chest radiographs for comparison.
+
+CURRENT STUDY (Study Date: 2024-10-04):
+                                 FINAL REPORT
+ EXAMINATION:  CHEST (PORTABLE AP)
+ 
+ INDICATION:  History: ___M status post bone marrow transplant with fever,
+ diarrhea, cough
+ 
+ TECHNIQUE:  Portable upright AP view of the chest
+ 
+ COMPARISON:  Chest radiograph ___ and chest CT ___
+ 
+ FINDINGS: 
+ 
+ Lung volumes are low.  Heart size is normal.  The aorta remains mildly
+ tortuous.  Mediastinal and hilar contours are unremarkable.  Streaky
+ atelectasis is demonstrated in both lung bases, more pronounced on the left. 
+ No focal consolidation, pleural effusion, or pneumothorax is present. 
+ Pulmonary vasculature is not engorged.  Known soft tissue lesion involving the
+ left seventh anterolateral rib likely accounts for the somewhat triangular
+ opacity projecting over the left costophrenic angle, better assessed on the
+ previous CT.
+ 
+ IMPRESSION: 
+ 
+ Bibasilar atelectasis and low lung volumes.
+
+
+Instructions:
+Review the chest X-ray image and, using the reports above only as supporting context, confirm whether **any** of the following are present:
+→ Atelectasis
+→ Cardiomegaly
+→ Consolidation
+→ Edema
+→ Pleural Effusion
+
+Respond with a single word:
+- **"yes"** if one or more conditions are present
+- **"no"** if none are present. No additional commentary or reasoning.

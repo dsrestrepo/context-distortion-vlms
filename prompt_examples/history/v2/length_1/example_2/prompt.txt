@@ -1,0 +1,56 @@
+=== RADIOLOGY CHECK REQUEST ===
+
+PRIOR REPORTS:
+[Report Date: 2023-08-01]
+EXAMINATION: MRI BRAIN WITH AND WITHOUT CONTRAST
+
+INDICATION: __-year-old with headache and new-onset dizziness.
+
+TECHNIQUE: Multiplanar T1, T2, FLAIR, diffusion-weighted imaging, susceptibility-weighted imaging, and post-contrast T1 sequences were obtained following administration of gadolinium-based IV contrast.
+
+COMPARISON: None available.
+
+FINDINGS: Brain size and morphology within expected limits for age. Ventricular system and basal cisterns are normal in size and contour. No acute ischemia on diffusion imaging. No intraparenchymal hemorrhage on susceptibility sequences. No mass lesion or abnormal extra-axial collection identified. No abnormal parenchymal or meningeal enhancement. Major flow voids preserved.
+
+IMPRESSION: 
+1. MRI brain with and without contrast demonstrates no acute intracranial abnormality. 
+2. No mass, hemorrhage, acute infarct, or abnormal enhancement identified.
+
+CURRENT STUDY (Study Date: 2024-04-22):
+                                 FINAL REPORT
+ EXAMINATION:  CHEST (PORTABLE AP)
+ 
+ INDICATION:  History: ___M status post bone marrow transplant with fever,
+ diarrhea, cough
+ 
+ TECHNIQUE:  Portable upright AP view of the chest
+ 
+ COMPARISON:  Chest radiograph ___ and chest CT ___
+ 
+ FINDINGS: 
+ 
+ Lung volumes are low.  Heart size is normal.  The aorta remains mildly
+ tortuous.  Mediastinal and hilar contours are unremarkable.  Streaky
+ atelectasis is demonstrated in both lung bases, more pronounced on the left. 
+ No focal consolidation, pleural effusion, or pneumothorax is present. 
+ Pulmonary vasculature is not engorged.  Known soft tissue lesion involving the
+ left seventh anterolateral rib likely accounts for the somewhat triangular
+ opacity projecting over the left costophrenic angle, better assessed on the
+ previous CT.
+ 
+ IMPRESSION: 
+ 
+ Bibasilar atelectasis and low lung volumes.
+
+
+Instructions:
+Review the chest X-ray image and, using the reports above only as supporting context, confirm whether **any** of the following are present:
+→ Atelectasis
+→ Cardiomegaly
+→ Consolidation
+→ Edema
+→ Pleural Effusion
+
+Respond with a single word:
+- **"yes"** if one or more conditions are present
+- **"no"** if none are present. No additional commentary or reasoning.

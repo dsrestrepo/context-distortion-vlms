@@ -1,0 +1,33 @@
+
+Patient Information:
+- Age: 58.0
+- Sex: Female
+- Race: White
+- ViewPosition: PA
+- Procedure description: Performed Desc
+- Summary:                                  FINAL REPORT
+ EXAMINATION:  CHEST (PA AND LAT)
+ 
+ INDICATION:  ___ year old woman with s/p lobectomy, mild PH, needs VQ // pre VQ
+ scan
+ 
+ TECHNIQUE:  PA and lateral radiographs of the chest from ___.
+ 
+ COMPARISON:  ___ and dating back to ___.
+ 
+ FINDINGS: 
+ 
+ The patient has had prior left upper lobectomy. Aeration of the left lung has
+ improved. Bilateral pleural effusions have resolved. The tip of a right
+ pectoral Infuse-A-Port extends to the low SVC. There is no pneumothorax. The
+ right lung is clear.
+ 
+ IMPRESSION: 
+ 
+ Interval decrease in small right pleural effusion.
+ Resolved pleural effusions.
+ Aeration of left lung has improved since ___.
+
+
+Based on the provided patient information and the associated chest X-ray image, does the patient have any of the following conditions: **Atelectasis**, **Cardiomegaly**, **Consolidation**, **Edema**, or **Pleural Effusion**?
+Your response must be "Yes" if any of the specified conditions is detected or "No" if none of the specified conditions is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).

@@ -1,0 +1,33 @@
+
+You are performing a structured diagnostic checklist on a chest X-ray.
+
+Patient file:
+────────────────────────────
+Age: 59.0
+Sex: Female
+Race: Black
+Projection: PA
+Procedure: nan
+────────────────────────────
+
+Radiology Summary:
+                                 FINAL REPORT
+ HISTORY:  Hypertension with leg edema, to assess for CHF.
+ 
+ FINDINGS:  In comparison with study of ___, the cardiac silhouette
+ remains at the upper limits of normal with mild tortuosity of the aorta.  No
+ acute pneumonia, vascular congestion, or pleural effusion.
+
+────────────────────────────
+
+Diagnostic Checklist. Don't provide the full checklist, just answer the question:
+[ ] Atelectasis  
+[ ] Cardiomegaly  
+[ ] Consolidation  
+[ ] Edema  
+[ ] Pleural Effusion  
+
+Mark **"yes"** if any of these findings are identified on the X-ray (considering the report and patient data).  
+Mark **"no"** if none of them apply.
+
+Final output: only "yes" or "no". No additional reasoning or checklist. Just 'yes' or 'no'.

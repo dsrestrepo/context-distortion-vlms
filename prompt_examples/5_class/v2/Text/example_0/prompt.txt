@@ -1,0 +1,40 @@
+
+=== RADIOLOGY CHECK REQUEST ===
+
+Case summary:
+Patient is a 65.0-year-old Female (Black).
+
+Exam details:
+• Projection: AP
+• Procedure: CHEST (PORTABLE AP)
+
+Clinical note:
+"                                 FINAL REPORT
+ INDICATION:  Patient with left CFA pseudoaneurysm resection, worsening
+ oxygenation, rule out effusion.
+ 
+ COMPARISON:  ___.
+ 
+ FINDINGS:
+ 
+ The patient has been extubated since the previous exam.  The right
+ hemodialysis catheter ends in the right atrium.  There is a new retrocardiac
+ density with volume loss, mostly compatible with atelectasis.  There is also a
+ mild right lung base atelectasis.  The cardiac and mediastinal contours are
+ normal.  New very mild left pleural effusion.  There is no pneumothorax.
+ 
+ CONCLUSION:
+ 
+ Progression of the left lower lung atelectasis without other significant
+ change.
+"
+
+Instructions for analysis:
+Additionally, review the chest X-ray image and determine if you can confirm the presence of **any** of the following:
+→ Atelectasis  
+→ Cardiomegaly  
+→ Consolidation  
+→ Edema  
+→ Pleural Effusion  
+
+Respond with a single word: **"yes"** (if any condition is present) or **"no"** (if none are found). No additional commentary or reasoning.

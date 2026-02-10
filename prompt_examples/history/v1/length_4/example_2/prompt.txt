@@ -1,0 +1,93 @@
+You are assisting in a radiology review task. Follow these steps carefully:
+
+1) Examine the chest X-ray image.
+2) Review prior radiology reports if any:
+[Report Date: 2024-04-08]
+EXAMINATION: CT ABDOMEN AND PELVIS WITH CONTRAST
+
+INDICATION: __-year-old with abdominal pain and nausea.
+
+TECHNIQUE: Contrast-enhanced CT of the abdomen and pelvis performed after IV contrast administration. Oral contrast was not administered.
+
+COMPARISON: None available.
+
+FINDINGS: Liver, spleen, pancreas, adrenal glands, and visualized portions of the stomach and bowel demonstrate normal size and morphology without focal lesion. Gallbladder without stones or wall thickening. No biliary ductal dilatation. Kidneys demonstrate symmetric enhancement without hydronephrosis or obstructing calculus. No abnormal bowel wall thickening or inflammatory stranding. No free intraperitoneal air or fluid. No suspicious lymphadenopathy. Visualized osseous structures unremarkable.
+
+IMPRESSION:
+1. No acute abdominal or pelvic abnormality identified on contrast-enhanced CT.
+2. No evidence of obstruction, free air, focal inflammatory change, or suspicious mass.
+--- --- ---
+[Report Date: 2024-02-20]
+EXAMINATION: Chest radiograph, PA and lateral.
+
+INDICATION: ___M status post bone marrow transplant; baseline/pre-procedure evaluation.
+
+TECHNIQUE: PA upright and lateral views.
+
+COMPARISON: None available.
+
+FINDINGS: Cardiomediastinal silhouette within normal size and contour for technique. Lungs clear without focal air‑space consolidation. No pleural effusion. No pneumothorax. No acute osseous abnormality identified.
+
+IMPRESSION: No acute cardiopulmonary disease. Normal chest radiographs for comparison.
+--- --- ---
+[Report Date: 2024-03-08]
+EXAMINATION: MRI BRAIN WITH AND WITHOUT CONTRAST
+
+INDICATION: __-year-old with headache and new-onset dizziness.
+
+TECHNIQUE: Multiplanar T1, T2, FLAIR, diffusion-weighted imaging, susceptibility-weighted imaging, and post-contrast T1 sequences were obtained following administration of gadolinium-based IV contrast.
+
+COMPARISON: None available.
+
+FINDINGS: Brain size and morphology within expected limits for age. Ventricular system and basal cisterns are normal in size and contour. No acute ischemia on diffusion imaging. No intraparenchymal hemorrhage on susceptibility sequences. No mass lesion or abnormal extra-axial collection identified. No abnormal parenchymal or meningeal enhancement. Major flow voids preserved.
+
+IMPRESSION: 
+1. MRI brain with and without contrast demonstrates no acute intracranial abnormality. 
+2. No mass, hemorrhage, acute infarct, or abnormal enhancement identified.
+--- --- ---
+[Report Date: 2024-01-23]
+EXAMINATION: WRIST ULTRASOUND
+
+INDICATION: __-year-old with right wrist pain following minor trauma; assess for tendon injury and effusion.
+
+TECHNIQUE: High-frequency linear transducer evaluation of the dorsal and volar wrist, including extensor and flexor tendons, radial and ulnar gutters, and distal radioulnar joint. Dynamic imaging performed. Color Doppler assessment of vascularity.
+
+COMPARISON: None available.
+
+FINDINGS: Extensor and flexor tendons are intact without discontinuity or focal thickening. No tendon subluxation on dynamic imaging. No fluid collection identified in the wrist joint, tendon sheaths, or along the distal radioulnar joint. No sonographic evidence of tenosynovitis or hyperemia on color Doppler. Bones visualized at the cortical surface demonstrate normal contour without step-off.
+
+IMPRESSION:
+1. No sonographic evidence of wrist tendon tear, tenosynovitis, or joint effusion.
+2. No focal fluid collection identified.
+
+3) Review the current chest X-ray report (Study Date: 2024-10-25):
+                                 FINAL REPORT
+ EXAMINATION:  CHEST (PORTABLE AP)
+ 
+ INDICATION:  History: ___M status post bone marrow transplant with fever,
+ diarrhea, cough
+ 
+ TECHNIQUE:  Portable upright AP view of the chest
+ 
+ COMPARISON:  Chest radiograph ___ and chest CT ___
+ 
+ FINDINGS: 
+ 
+ Lung volumes are low.  Heart size is normal.  The aorta remains mildly
+ tortuous.  Mediastinal and hilar contours are unremarkable.  Streaky
+ atelectasis is demonstrated in both lung bases, more pronounced on the left. 
+ No focal consolidation, pleural effusion, or pneumothorax is present. 
+ Pulmonary vasculature is not engorged.  Known soft tissue lesion involving the
+ left seventh anterolateral rib likely accounts for the somewhat triangular
+ opacity projecting over the left costophrenic angle, better assessed on the
+ previous CT.
+ 
+ IMPRESSION: 
+ 
+ Bibasilar atelectasis and low lung volumes.
+
+
+Now integrate the image with the textual context to decide whether the case shows **any** of:
+Atelectasis, Cardiomegaly, Consolidation, Edema, Pleural Effusion.
+
+Reply with only **"yes"** if any are present, or **"no"** if none are detected. No additional commentary or reasoning.

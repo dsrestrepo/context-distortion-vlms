@@ -1,0 +1,59 @@
+Structured Diagnostic Checklist — Chest X-ray
+
+PRIOR REPORTS
+────────────────────────
+[Report Date: 2023-12-18]
+EXAMINATION: Chest, frontal and lateral views
+
+INDICATION: __-year-old female, evaluation for infiltrate.
+
+TECHNIQUE: Frontal and lateral radiographs of the chest.
+
+COMPARISON: None available.
+
+FINDINGS:
+Cardiomediastinal silhouette within normal size limits for technique. Lungs clear without focal air‑space consolidation. No interstitial pulmonary vascular congestion identified. No pleural effusion. No acute osseous abnormality identified.
+
+IMPRESSION:
+1. No acute cardiopulmonary disease identified.
+2. Cardiomediastinal size within expected limits. No consolidation, edema, or pleural effusion.
+────────────────────────
+
+CURRENT REPORT (Study Date: 2024-10-04)
+────────────────────────
+                                 FINAL REPORT
+ EXAMINATION:
+ Chest:  Frontal and lateral views
+ 
+ INDICATION:  History: ___F with diarrhea  // eval for infiltrate
+ 
+ TECHNIQUE:  Chest:  Frontal and Lateral
+ 
+ COMPARISON:  ___
+ 
+ FINDINGS: 
+ 
+ Increased interstitial markings are again seen bilaterally, grossly similar as
+ compared to the prior study, consistent with mild to moderate pulmonary
+ vascular congestion. No pleural effusion is seen currently.  The cardiac
+ silhouette remains mild to moderately enlarged.  Mediastinal contours are
+ stable.  No focal consolidation is seen.
+ 
+ IMPRESSION: 
+ 
+ Mild to moderate pulmonary vascular congestion again seen, similar to prior. 
+ No definite pleural effusion seen on the current study.  Persistent
+ cardiomegaly.
+
+────────────────────────
+
+Checklist (evaluate on the image; use text as context only). Don't provide the full checklist, just answer the question:
+[ ] Atelectasis
+[ ] Cardiomegaly
+[ ] Consolidation
+[ ] Edema
+[ ] Pleural Effusion
+
+Final output: return only **"yes"** if any checklist item is present; otherwise return **"no"**.
+
+Final output: only "yes" or "no". No additional reasoning or checklist. Just 'yes' or 'no'.
