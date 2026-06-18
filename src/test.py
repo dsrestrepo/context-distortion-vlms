@@ -20,12 +20,28 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from collections import defaultdict
 
+# Global settings for larger font sizes
+plt.rcParams.update({
+    'font.size': 14,
+    'axes.titlesize': 16,
+    'axes.labelsize': 14,
+    'xtick.labelsize': 12,
+    'ytick.labelsize': 12,
+    'legend.fontsize': 12,
+    'figure.titlesize': 18
+})
+
+import seaborn as sns
+# Set consistent theme and style for all plots to avoid gray backgrounds
+sns.set_theme(style="whitegrid", rc={"axes.edgecolor": "black", "grid.color": "lightgrey"})
+
 PRETTY_NAMES = {
     "qwen2_vl_7b":        "Qwen-2 VL",
+    "qwen3_vl_8b":        "Qwen-3 VL",
     "llava_1_5_7b":       "LLaVA 1.5",
-    "paligemma2_10b":     "PaliGemma-2",
-    "janus_pro_7b":       "Janus-Pro",
-    "biomedgpt":          "BiomedGPT",
+    "gemma4_12b":         "Gemma 4 12B",
+    "glm_4_6v_flash":     "GLM-4.6V Flash",
+    "kimi_vl_a3b":        "Kimi-VL A3B",
     "medgemma":           "MedGemma",
     "llama3_10b":         "Llama-3.2",
     "llava_med_llava_v1": "LLaVA-Med V1",
@@ -44,8 +60,6 @@ PRETTY_NAMES.update({
     "gpt-5":                 "GPT‑5",
     "gpt-5-2025-08-07": "GPT‑5",
     "openai/gpt-5-mini":    "GPT‑5 mini",
-    "openai/gpt-oss-20b":   "GPT‑OSS‑20B",         # text‑only
-    "openai/gpt-oss-120b":  "GPT‑OSS‑120B",        # text‑only
     "gemini_3_pro":        "Gemini 3 Pro",
     "gemini-3-pro-preview": "Gemini 3 Pro",
     "gemini-2.0-flash":     "Gemini 2.0",
@@ -317,8 +331,10 @@ def plot_calibration(df, prob_col, label_col, title="Calibration", n_bins=10, ou
     plt.legend()
     plt.tight_layout()
     if out_path is not None:
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
         plt.savefig(out_path, dpi=200)
     plt.show()
+    plt.close()
     
     return ece
 
@@ -338,7 +354,9 @@ def plot_all_shifts_calibration(
         "Only_text": "Only Text",
         "Only_image": "Only Image"
     },
-    path=None
+    path=None,
+    output_dir=None,
+    version=None,
 ):
     plt.figure(figsize=(6,6))
 
@@ -346,6 +364,8 @@ def plot_all_shifts_calibration(
         path = os.path.join(base_dir, model_key, f"{dataset}_base_shifted.csv")    
 
     df = pd.read_csv(path)
+    if version is not None and "version" in df.columns:
+        df = df[df["version"] == version]
     
     # Check for probability columns
     req_cols = ['p_yes', 'p_no'] if p_yes else ['p_Yes', 'p_No']
@@ -397,8 +417,10 @@ def plot_all_shifts_calibration(
     plt.xlabel("Predicted Probability")
     plt.ylabel("True Frequency")
     plt.legend()
-    os.makedirs("images", exist_ok=True)
-    out_path = f"images/{model_key}_{dataset}_calibration.png"
+    if output_dir is None:
+        output_dir = os.path.join("images", model_key, "calibration", dataset)
+    os.makedirs(output_dir, exist_ok=True)
+    out_path = os.path.join(output_dir, "all_shifts_calibration.png")
     plt.tight_layout()
     plt.savefig(out_path, dpi=200)
     plt.show()
@@ -409,9 +431,7 @@ def plot_all_shifts_calibration(
 def plot_and_save_calibration(df, shift_type, save_calibration_plot, out_path, prob_col, label_col, title="Calibration"):
 
     try:
-        if save_calibration_plot:
-            out_path = f'images/calibration_example_{shift_type}.png'
-        else:
+        if not save_calibration_plot:
             out_path = None
         ece = plot_calibration(df, prob_col=prob_col, label_col=label_col, title=title, out_path=out_path)
         print(f"Expected Calibration Error (ECE): {ece:.4f}")
@@ -422,7 +442,7 @@ def plot_and_save_calibration(df, shift_type, save_calibration_plot, out_path, p
     return ece
 
 
-def calculate_metrics_dataset(results_dir, subgroup_variables=["gender", "race", "language", "maritalstatus"], counterfactual=False, confusion_matrix=False, first_token=False, show_unknown_responses=False, unmatched=False, calibration=False, p_yes=False, save_calibration_plot=False, shift_col="shift", edited_cols=['Image', 'Text'], 
+def calculate_metrics_dataset(results_dir, subgroup_variables=["gender", "race", "language", "maritalstatus"], counterfactual=False, confusion_matrix=False, first_token=False, show_unknown_responses=False, unmatched=False, calibration=False, p_yes=False, save_calibration_plot=False, calibration_dir="images/calibration", shift_col="shift", edited_cols=['Image', 'Text'],
                               shift_names={
                                     "No": "No Shift",
                                     "Image": "Img Shift",
@@ -611,7 +631,15 @@ def calculate_metrics_dataset(results_dir, subgroup_variables=["gender", "race",
                     if calibration:
                         # Always calculate ECE, but only plot if not silent
                         if not silent:
-                            ece = plot_and_save_calibration(df, shift_type, save_calibration_plot, out_path=f'images/calibration_example_{shift_type}.png', prob_col="p_yes", label_col="ground_truth", title=f"Calibration: {shift_type} p_yes")
+                            calibration_name = (
+                                f"history_{length}_{shift_type}"
+                                if multi_history is not None
+                                else str(shift_type)
+                            )
+                            out_path = os.path.join(
+                                calibration_dir, f"calibration_{calibration_name}.png"
+                            )
+                            ece = plot_and_save_calibration(df, shift_type, save_calibration_plot, out_path=out_path, prob_col="p_yes", label_col="ground_truth", title=f"Calibration: {shift_type} p_yes")
                         else:
                             # Calculate ECE without plotting (for bootstrap)
                             from sklearn.calibration import calibration_curve
@@ -640,7 +668,15 @@ def calculate_metrics_dataset(results_dir, subgroup_variables=["gender", "race",
                     if calibration:
                         # Always calculate ECE, but only plot if not silent
                         if not silent:
-                            ece = plot_and_save_calibration(df, shift_type, save_calibration_plot, out_path=f'images/calibration_example_{shift_type}.png', prob_col="p_Yes", label_col="ground_truth", title=f"Calibration: {shift_type} p_Yes")
+                            calibration_name = (
+                                f"history_{length}_{shift_type}"
+                                if multi_history is not None
+                                else str(shift_type)
+                            )
+                            out_path = os.path.join(
+                                calibration_dir, f"calibration_{calibration_name}.png"
+                            )
+                            ece = plot_and_save_calibration(df, shift_type, save_calibration_plot, out_path=out_path, prob_col="p_Yes", label_col="ground_truth", title=f"Calibration: {shift_type} p_Yes")
                         else:
                             # Calculate ECE without plotting (for bootstrap)
                             from sklearn.calibration import calibration_curve
@@ -763,13 +799,15 @@ def calculate_metrics_dataset(results_dir, subgroup_variables=["gender", "race",
                                 accuracy, precision, recall, f1, sensitivity, specificity, auc = calculate_metrics(subgroup_df["ground_truth"], subgroup_df[label_logits], show_unknown_responses=False, silent=silent)
                                 entropy, entropy_std, cross_entropy, ce_std = compute_entropy_and_cross_entropy(subgroup_df, p_yes_col="p_yes", p_no_col="p_no", label_col="ground_truth")
                                 if calibration:
-                                    ece = plot_and_save_calibration(subgroup_df, shift_type, save_calibration_plot, out_path=f'images/calibration_example_{shift_type}_{subgroup}_{subgroup_value}.png', prob_col="p_yes", label_col="ground_truth", title=f"Calibration: {shift_type} {subgroup}={subgroup_value} p_yes")
+                                    out_path = os.path.join(calibration_dir, f"calibration_{shift_type}_{subgroup}_{subgroup_value}.png")
+                                    ece = plot_and_save_calibration(subgroup_df, shift_type, save_calibration_plot, out_path=out_path, prob_col="p_yes", label_col="ground_truth", title=f"Calibration: {shift_type} {subgroup}={subgroup_value} p_yes")
                             else:
                                 label_logits = "pred_first_token_Yes"
                                 accuracy, precision, recall, f1, sensitivity, specificity, auc = calculate_metrics(subgroup_df["ground_truth"], subgroup_df[label_logits], show_unknown_responses=False, silent=silent)
                                 entropy, entropy_std, cross_entropy, ce_std = compute_entropy_and_cross_entropy(subgroup_df, p_yes_col="p_Yes", p_no_col="p_No", label_col="ground_truth")
                                 if calibration:
-                                    ece = plot_and_save_calibration(subgroup_df, shift_type, save_calibration_plot, out_path=f'images/calibration_example_{shift_type}_{subgroup}_{subgroup_value}.png', prob_col="p_Yes", label_col="ground_truth", title=f"Calibration: {shift_type} {subgroup}={subgroup_value} p_Yes")
+                                    out_path = os.path.join(calibration_dir, f"calibration_{shift_type}_{subgroup}_{subgroup_value}.png")
+                                    ece = plot_and_save_calibration(subgroup_df, shift_type, save_calibration_plot, out_path=out_path, prob_col="p_Yes", label_col="ground_truth", title=f"Calibration: {shift_type} {subgroup}={subgroup_value} p_Yes")
                         
                         if not silent:
                             print(f"Accuracy: {accuracy:.4f}")
@@ -962,21 +1000,45 @@ def calculate_metrics_all_models(model_dict, subgroup_variables=["gender", "race
         elif versions is not None and isinstance(versions, list):
             all_version_metrics = {}
             for version in versions:
+                calibration_dir = os.path.join(
+                    "images",
+                    model_name,
+                    "calibration",
+                    dataset,
+                    _safe_version_tag(version),
+                )
                 print(90 * "=" )
                 print(40 * "=" + f" Metrics for {model_name} Version: {version} " + 40 * "=")
                 print(90 * "=" )
-                metrics = calculate_metrics_dataset(path, subgroup_variables=subgroup_variables, counterfactual=counterfactual, confusion_matrix=confusion_matrix, first_token=first_token, show_unknown_responses=show_unknown_responses, unmatched=unmatched, calibration=calibration, p_yes=p_yes, save_calibration_plot=save_calibration_plot, shift_col=shift_col, edited_cols=edited_cols, shift_names=shift_names, multi_history=multi_history, history_length_col=history_length_col, max_subgroup_categories=max_subgroup_categories, split_q=split_q, shifts=shifts, version=version, silent=False)
+                metrics = calculate_metrics_dataset(path, subgroup_variables=subgroup_variables, counterfactual=counterfactual, confusion_matrix=confusion_matrix, first_token=first_token, show_unknown_responses=show_unknown_responses, unmatched=unmatched, calibration=calibration, p_yes=p_yes, save_calibration_plot=save_calibration_plot, calibration_dir=calibration_dir, shift_col=shift_col, edited_cols=edited_cols, shift_names=shift_names, multi_history=multi_history, history_length_col=history_length_col, max_subgroup_categories=max_subgroup_categories, split_q=split_q, shifts=shifts, version=version, silent=False)
                 all_version_metrics[version] = metrics
+                if calibration and first_token:
+                    plot_all_shifts_calibration(
+                        model_key=model_name,
+                        dataset=dataset,
+                        base_dir=results_dir,
+                        pretty_names=PRETTY_NAMES,
+                        n_bins=10,
+                        p_yes=p_yes,
+                        shifts=shift_names,
+                        shift_col=shift_col,
+                        path=path,
+                        output_dir=calibration_dir,
+                        version=version,
+                    )
                 print("\n\n")
             all_results[model_name] = all_version_metrics
         
         else:
-            metrics = calculate_metrics_dataset(path, subgroup_variables=subgroup_variables, counterfactual=counterfactual, confusion_matrix=confusion_matrix, first_token=first_token, show_unknown_responses=show_unknown_responses, unmatched=unmatched, calibration=calibration, p_yes=p_yes, save_calibration_plot=save_calibration_plot, shift_col=shift_col, edited_cols=edited_cols, shift_names=shift_names, multi_history=multi_history, history_length_col=history_length_col, max_subgroup_categories=max_subgroup_categories, split_q=split_q, shifts=shifts, silent=False)
+            calibration_dir = os.path.join(
+                "images", model_name, "calibration", dataset
+            )
+            metrics = calculate_metrics_dataset(path, subgroup_variables=subgroup_variables, counterfactual=counterfactual, confusion_matrix=confusion_matrix, first_token=first_token, show_unknown_responses=show_unknown_responses, unmatched=unmatched, calibration=calibration, p_yes=p_yes, save_calibration_plot=save_calibration_plot, calibration_dir=calibration_dir, shift_col=shift_col, edited_cols=edited_cols, shift_names=shift_names, multi_history=multi_history, history_length_col=history_length_col, max_subgroup_categories=max_subgroup_categories, split_q=split_q, shifts=shifts, silent=False)
             print("\n\n")
         
             all_results[model_name] = metrics
         
-        if calibration and first_token and not bootstrap:
+        if calibration and first_token and not bootstrap and not isinstance(versions, list):
             img_path = plot_all_shifts_calibration(
                 model_key=model_name,
                 dataset=dataset,
@@ -986,7 +1048,10 @@ def calculate_metrics_all_models(model_dict, subgroup_variables=["gender", "race
                 p_yes=p_yes,
                 shifts=shift_names,
                 shift_col=shift_col,
-                path=path
+                path=path,
+                output_dir=os.path.join(
+                    "images", model_name, "calibration", dataset
+                ),
             )
     
     all_results = {PRETTY_NAMES.get(key, key): val for key, val in all_results.items()}
@@ -1067,7 +1132,7 @@ def plot_nfr(nfr_df: pd.DataFrame, model_name: str, save_path: str = None):
         ax.text(bar.get_x() + bar.get_width()/2, height + 0.005,
                 f"{height:.2f}", ha='center', va='bottom', fontsize=10)
 
-    ax.set_title(f"Negative Flip Rate for {model_name}", fontsize=14)
+    ax.set_title(f"Negative Flip Rate for {model_name}", fontsize=20)
     ax.set_ylabel("NFR (↓ better)", fontsize=12)
     ax.set_ylim(0, max(values)*1.15 if len(values) else 1.0)
     ax.grid(axis='y', linestyle='--', alpha=0.7)
@@ -1888,14 +1953,14 @@ def plot_kappa_scores(
         if not np.isnan(val):
             height = bar.get_height()
             ax.text(i, height + 0.02, f'{val:.3f}',
-                   ha='center', va='bottom', fontsize=10, fontweight='bold')
+                   ha='center', va='bottom', fontsize=18, fontweight='bold')
     
-    ax.set_xlabel('Model', fontsize=12, fontweight='bold')
-    ax.set_ylabel("Cohen's Kappa (Inter-Rater Agreement)", fontsize=12, fontweight='bold')
-    ax.set_title(title, fontsize=14, fontweight='bold', pad=20)
+    ax.set_xlabel('Model', fontsize=20, fontweight='bold')
+    ax.set_ylabel("Cohen's Kappa (Inter-Rater Agreement)", fontsize=20, fontweight='bold')
+    ax.set_title(title, fontsize=24, fontweight='bold', pad=20)
     ax.set_xticks(range(len(model_names)))
-    ax.set_xticklabels(model_names, rotation=60, ha='right', fontsize=11)
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.set_xticklabels(model_names, rotation=60, ha='right', fontsize=18)
+    ax.grid(False) # Turn off background grid to keep it clean
     ax.set_ylim(0, min(1.0, max(kappa_values) * 1.15) if kappa_values else 1.0)
     
     # Add legend for interpretation
@@ -2631,9 +2696,9 @@ def plot_nfr_heatmap(
 
     # ── 3) Axis tick labels ──────────────────────────────────────────────────
     ax.set_xticks(range(mat.shape[1]))
-    ax.set_xticklabels(mat.columns, rotation=30, ha="right", fontsize=11)
+    ax.set_xticklabels(mat.columns, rotation=30, ha="right", fontsize=16)
     ax.set_yticks(range(mat.shape[0]))
-    ax.set_yticklabels(mat.index, fontsize=11)
+    ax.set_yticklabels(mat.index, fontsize=16)
 
     # ── 4) Annotate each cell ────────────────────────────────────────────────
     for i in range(mat.shape[0]):
@@ -2653,7 +2718,7 @@ def plot_nfr_heatmap(
 
     # ── 5) Title + colour-bar ────────────────────────────────────────────────
     title = f"Negative-Flip Rate on {dataset_name}"
-    ax.set_title(title, fontsize=14, pad=14)
+    ax.set_title(title, fontsize=20, pad=14)
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.ax.set_ylabel("NFR", rotation=-90, va="bottom")
@@ -2675,8 +2740,8 @@ def plot_metrics_with_ci_split(
     title="Comparison of Evaluation Metrics",
     figsize=(20, 5),
     bar_group_width=0.85,
-    capsize=3,
-    style="bmh",
+    capsize=8,
+    style="default",
     annotate=True,
     compute_f1_if_missing=True,
     ylim=None,
@@ -2692,7 +2757,8 @@ def plot_metrics_with_ci_split(
     Saves them as {save_path}_distractors.png and {save_path}_history.png (stripping extension from save_path)
     """
     
-    plt.style.use(style)
+    if style:
+        plt.style.use(style)
 
     # ---------- helpers ----------
     def _safe_f1(p, r):
@@ -2824,7 +2890,7 @@ def plot_metrics_with_ci_split(
                     positions, vals_plot, width,
                     label=shift,
                     color=(shift_colors.get(shift) if shift_colors else None),
-                    yerr=errs_plot, capsize=capsize, linewidth=0
+                    yerr=errs_plot, capsize=capsize, linewidth=2.5, error_kw={'linewidth': 2.5}
                 )
 
                 if annotate:
@@ -2852,7 +2918,7 @@ def plot_metrics_with_ci_split(
             # Center is x + (num_shifts - 1) * width / 2
             if len(models_to_plot) > 0:
                 ax.set_xticks(x_plot + (num_shifts - 1) * width / 2)
-                ax.set_xticklabels(models_to_plot, fontsize=10, rotation=rotation_xticks)
+                ax.set_xticklabels(models_to_plot, fontsize=16, rotation=rotation_xticks)
             else:
                  ax.set_xticks([])
                  ax.set_xticklabels([])
@@ -2864,10 +2930,10 @@ def plot_metrics_with_ci_split(
                 ax.set_ylim(0, 1.15)
                 
             ax.grid(axis='y', linestyle='--', alpha=0.7)
-            ax.set_title(metric, fontsize=16, pad=22)
+            ax.set_title(metric, fontsize=24, pad=22)
             
             if idx == 0:
-                ax.set_ylabel("Score", fontsize=14)
+                ax.set_ylabel("Score", fontsize=20)
 
         # Legend
         handles, labels = axs[-1].get_legend_handles_labels()
@@ -2913,7 +2979,8 @@ def plot_prompt_robustness(
     shift_colors=None,
     sota_zero_shot=None,
     metric_fontsize=9,
-    rotation_xticks=30
+    rotation_xticks=30,
+    figsize=(20, 5)
 ):
     
     # =========================
@@ -2976,7 +3043,7 @@ def plot_prompt_robustness(
     means, stds = aggregate_across_variants(prompt_results, metrics=metrics)
 
     # Match your previous layout: one figure with subplots
-    fig, axs = plt.subplots(1, len(metrics), figsize=(20, 5), sharey=True)
+    fig, axs = plt.subplots(1, len(metrics), figsize=figsize, sharey=True)
     if len(metrics) == 1:
         axs = [axs]
 
@@ -3016,15 +3083,6 @@ def plot_prompt_robustness(
                 # Note: models has changed to models_to_plot
                 model_name = models_to_plot[model_index]
 
-                # --- SPECIAL CASE: Janus-Pro + Only Text ---
-                if "Janus-Pro" in model_name and shift == "Only Text":
-                    ax.text(
-                        bar.get_x() + bar.get_width()/2, 0.02,
-                        "not available",
-                        ha="center", va="bottom", fontsize=metric_fontsize, rotation=90
-                    )
-                    continue
-
                 # Normal case
                 if not np.isnan(v):
                     # Place text above the bar + error
@@ -3051,16 +3109,16 @@ def plot_prompt_robustness(
         
         if len(models_to_plot) > 0:
             ax.set_xticks(x_plot + (len(shifts) - 1) * width / 2)
-            ax.set_xticklabels(models_to_plot, fontsize=10, rotation=rotation_xticks)
+            ax.set_xticklabels(models_to_plot, fontsize=16, rotation=rotation_xticks)
         else:
              ax.set_xticks([])
              ax.set_xticklabels([])
              
-        ax.set_title(metric, fontsize=16, pad=22)
+        ax.set_title(metric, fontsize=24, pad=22)
         ax.set_ylim(0, 1.15)
         ax.grid(axis='y', linestyle='--', alpha=0.7)
         if idx == 0:
-            ax.set_ylabel("Score", fontsize=14)
+            ax.set_ylabel("Score", fontsize=20)
 
     # Single legend (dedupe labels from repeated axhline)
     handles, labels = axs[-1].get_legend_handles_labels()
@@ -3076,6 +3134,7 @@ def plot_prompt_robustness(
     os.makedirs(os.path.dirname(out_png), exist_ok=True)
     plt.savefig(out_png, bbox_inches="tight", dpi=300)
     plt.show()
+    plt.close(fig)
     print(f"Saved: {out_png}")
 
 
@@ -3309,10 +3368,10 @@ def plot_response_distribution(
                         ax.text(x[j] + offset, height + 1, version, 
                                ha='center', va='bottom', fontsize=8, fontweight='bold')
             
-        ax.set_title(model, fontsize=14, fontweight='bold', y=1.05)
+        ax.set_title(model, fontsize=20, fontweight='bold', y=1.05)
         ax.set_xticks(x)
         ax.set_xticklabels(conditions, rotation=45, ha='right', fontsize=10)
-        ax.set_ylabel(ylabel, fontsize=11)
+        ax.set_ylabel(ylabel, fontsize=16)
         ax.set_ylim(0, (105 if normalize else None))
         ax.grid(axis='y', linestyle='--', alpha=0.3)
         
@@ -3331,5 +3390,4 @@ def plot_response_distribution(
         plt.savefig(save_path, bbox_inches='tight', dpi=300)
         print(f"Saved: {save_path}")
     plt.show()
-
-
+    plt.close(fig)

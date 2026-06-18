@@ -8,23 +8,11 @@ import random
 # Mismatch/uncertainty token
 MISMATCH_TOKEN = "None"
 
-# Binary response instructions (yes/no only)
-BINARY_INSTRUCTION_2OPT = 'Your response must be "Yes" if any condition is detected or "No" if no abnormality is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).'
-
-# Ternary response instructions (yes/no/?)
-BINARY_INSTRUCTION_3OPT = f'Your response must be "yes" if any condition is detected, "no" if no abnormality is detected, or "{MISMATCH_TOKEN}" if there is a mismatch between the image and the text or the information is not conclusive. Your response should be only "yes", "no", or "{MISMATCH_TOKEN}" (without additional commentary or reasoning).'
-
 # 5-class specific instructions (yes/no for specified conditions)
 FIVECLASS_INSTRUCTION_2OPT = 'Your response must be "Yes" if any of the specified conditions is detected or "No" if none of the specified conditions is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).'
 
 # 5-class with uncertainty option
 FIVECLASS_INSTRUCTION_3OPT = f'Your response must be "yes" if any of the specified conditions is detected, "no" if none of the specified conditions is detected, or "{MISMATCH_TOKEN}" if there is a mismatch between the image and the text or the information is not conclusive. Your response should be only "yes", "no", or "{MISMATCH_TOKEN}" (without additional commentary or reasoning).'
-
-# Image-only binary instructions
-IMAGE_ONLY_BINARY_INSTRUCTION_2OPT = 'Your response must be "Yes" if any condition is detected or "No" if no abnormality is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).'
-
-# Image-only with uncertainty
-IMAGE_ONLY_BINARY_INSTRUCTION_3OPT = f'Your response must be "yes" if any condition is detected, "no" if no abnormality is detected, or "{MISMATCH_TOKEN}" if the information is not conclusive. Your response should be only "yes", "no", or "{MISMATCH_TOKEN}" (without additional commentary or reasoning).'
 
 # Image-only 5-class instructions
 IMAGE_ONLY_FIVECLASS_INSTRUCTION_2OPT = 'Your response must be "Yes" if any of the specified conditions is detected or "No" if none of the specified conditions is detected. Your response should be only "yes" or "no" (without additional commentary or reasoning).'
@@ -399,225 +387,8 @@ Respond only with "yes" or "no" (without additional commentary).
 
 
 #########################################################################
-########################### HAM 10000 prompts ###########################
-#########################################################################
-
-
-HAM10000_TEXT_PROMPT_FULL = lambda metadata_row: f"""
-Patient Information:
-- Age: {metadata_row.get('age', 'Not Available')}
-- Sex: {metadata_row.get('sex', 'Not Available')}
-- Localization: {metadata_row.get('localization', 'Not Available')}
-- Diagnostic Technique: {metadata_row.get('dx_type', 'Not Available')}
-
-Based on the provided patient information and the dermoscopic image, please analyze the image and determine the diagnosis from the following list:
-• akiec (Actinic keratoses and intraepithelial carcinoma / Bowen's disease)
-• bcc (Basal cell carcinoma)
-• bkl (Benign keratosis-like lesions, e.g., solar lentigines, seborrheic keratoses, lichen-planus like keratoses)
-• df (Dermatofibroma)
-• mel (Melanoma)
-• nv (Melanocytic nevi)
-• vasc (Vascular lesions, e.g., angiomas, angiokeratomas, pyogenic granulomas, hemorrhage)
-
-Your answer must be exactly one label from the above list: 'nv', 'bkl', 'mel', 'akiec', 'bcc', 'vasc', 'df'. Write it exactly like that and do not include any additional text or commentary.
-"""
-
-HAM10000_TEXT_PROMPT_BINARY = lambda metadata_row: f"""
-Patient Information:
-- Age: {metadata_row.get('age', 'Not Available')}
-- Sex: {metadata_row.get('sex', 'Not Available')}
-- Localization: {metadata_row.get('localization', 'Not Available')}
-- Diagnostic Technique: {metadata_row.get('dx_type', 'Not Available')}
-
-Based on the provided patient information and the dermoscopic image, please analyze the image and determine the diagnosis from the following list:
-• mel (Melanoma)
-• nv (Melanocytic nevi)
-
-Your answer must be exactly one label from the above list: 'nv' or 'mel'. Write it exactly like that and do not include any additional text or commentary.
-"""
-
-
-HAM10000_ONLY_IMAGE_TEXT_PROMPT = f"""
-Based on the image only, please analyze the image and determine the diagnosis from the following list:
-• akiec (Actinic keratoses and intraepithelial carcinoma / Bowen's disease)
-• bcc (Basal cell carcinoma)
-• bkl (Benign keratosis-like lesions, e.g., solar lentigines, seborrheic keratoses, lichen-planus like keratoses)
-• df (Dermatofibroma)
-• mel (Melanoma)
-• nv (Melanocytic nevi)
-• vasc (Vascular lesions, e.g., angiomas, angiokeratomas, pyogenic granulomas, hemorrhage)
-
-Your answer must be exactly one label from the above list: 'nv', 'bkl', 'mel', 'akiec', 'bcc', 'vasc', 'df'. Write it exactly like that and do not include any additional text or commentary.
-"""
-
-HAM10000_ONLY_TEXT_PROMPT_FULL = lambda metadata_row: f"""
-Patient Information:
-- Age: {metadata_row.get('age', 'Not Available')}
-- Sex: {metadata_row.get('sex', 'Not Available')}
-- Localization: {metadata_row.get('localization', 'Not Available')}
-- Diagnostic Technique: {metadata_row.get('dx_type', 'Not Available')}
-
-Based on the provided patient information, please analyze the image and determine the diagnosis from the following list:
-• akiec (Actinic keratoses and intraepithelial carcinoma / Bowen's disease)
-• bcc (Basal cell carcinoma)
-• bkl (Benign keratosis-like lesions, e.g., solar lentigines, seborrheic keratoses, lichen-planus like keratoses)
-• df (Dermatofibroma)
-• mel (Melanoma)
-• nv (Melanocytic nevi)
-• vasc (Vascular lesions, e.g., angiomas, angiokeratomas, pyogenic granulomas, hemorrhage)
-
-Your answer must be exactly one label from the above list: 'nv', 'bkl', 'mel', 'akiec', 'bcc', 'vasc', 'df'. Write it exactly like that and do not include any additional text or commentary.
-"""
-
-HAM10000_ONLY_TEXT_PROMPT_BINARY = lambda metadata_row: f"""
-Patient Information:
-- Age: {metadata_row.get('age', 'Not Available')}
-- Sex: {metadata_row.get('sex', 'Not Available')}
-- Localization: {metadata_row.get('localization', 'Not Available')}
-- Diagnostic Technique: {metadata_row.get('dx_type', 'Not Available')}
-
-Based on the provided patient information, please analyze the image and determine the diagnosis from the following list:
-• mel (Melanoma)
-• nv (Melanocytic nevi)
-
-Your answer must be exactly one label from the above list: 'nv' or 'mel'. Write it exactly like that and do not include any additional text or commentary.
-"""
-
-#########################################################################
-####################### Harvard-FairVLMed prompts #######################
-#########################################################################
-
-
-GLAUCOMA_TEXT_PROMPT = lambda metadata_row: f"""
-    Patient Information:
-    - Age: {metadata_row['age']}
-    - Gender: {metadata_row['gender']}
-    - Race: {metadata_row['race']}
-    - Language: {metadata_row['language']}
-    - Marital Status: {metadata_row['maritalstatus']}
-    - Ethnicity: {metadata_row['ethnicity']}
-    - Summary: {metadata_row['note']}   
-    Based on this image and patient information, does the patient have glaucoma? 
-    Respond with "yes" or "no". (without additional commentary)
-    """
-
-
-
-GLAUCOMA_ONLY_IMAGE_TEXT_PROMPT = f"""
-Based on the image only, does the patient have glaucoma?
-Respond with "yes" or "no". (without additional commentary)
-"""
-
-
-
-GLAUCOMA_ONLY_TEXT_PROMPT = lambda metadata_row: f"""
-    Patient Information:
-    - Age: {metadata_row['age']}
-    - Gender: {metadata_row['gender']}
-    - Race: {metadata_row['race']}
-    - Language: {metadata_row['language']}
-    - Marital Status: {metadata_row['maritalstatus']}
-    - Ethnicity: {metadata_row['ethnicity']}
-    - Summary: {metadata_row['note']}   
-    Based on this patient information, does the patient have glaucoma? 
-    Respond with "yes" or "no". (without additional commentary)
-    """
-
-
-#########################################################################
 ####################### MIMIC-CXR prompts #######################
 #########################################################################
-
-
-##################################################################################
-########################### TODO: Revise prompts below ###########################
-##################################################################################
-
-""" VALSE MIMIC-CXR """
-CXR_VALSE_TEXT_PROMPT = lambda row, original=True: f"""
-You are an expert chest-radiology assistant.
-
-Radiology report (verbatim):
-{row['report'] if original else row['modified_report']}
-
-Question (answer very concisely):
-{row['question']}
-
-✦ Respond **only with the answer** required by the question – no extra words.
-* In case that the report does not provide enough information to answer the question, respond with "uncertain".
-* If the image and report disagree significantly with respect to the question, respond with "contradictory".
-"""
-
-
-CXR_VALSE_BINARY_TEXT_PROMPT_BINARY = lambda row, original=True: f"""
-You are an expert chest-radiology assistant.
-
-Radiology report (verbatim):
-{row['report'] if original else row['modified_report']}
-Question (The questions are always "yes" and "no questions, but you can additionally find "uncertain" and "contradictory" as answers. Nothing else.):
-{row['question']}
-✦ Respond **only with the answer** required by the question - no extra words.
-
-Possible answers are:
-- "yes" : if the answer is affirmative;
-- "no" : if the answer is negative;
-- "uncertain": if the report does not provide enough information to answer the question;
-- "contradictory": if the report and image disagree significantly.
-"""
-
-
-#### History-based prompt ####
-
-CXR_HISTORY_TEXT_PROMPT = lambda row, original=True, history_cols_to_use=None: f"""
-You are an expert chest-radiology assistant.
-
-'Prior reports:'
-{'--- --- ---'.join( [str(row[col]) for col in history_cols_to_use if row[col]]) if not original else 'No prior report'}
-
-
-Current chest X-ray report:
-{row['report']}
-
-Based on the provided patient information and the associated chest X-ray image, does the patient has any condition (Pleural Effusion, Atelectasis, Cardiomegaly, Consolidation, Edema, Enlarged Cardiomediastinum, Fracture, Lung Lesion, Lung Opacity, Pleural Other, Pneumonia, or Pneumothorax)?
-
-Your response must be "Yes" if any condition is detected or "No" if no abnormality is detected. Your response should be only "yes" or "no" (without additional commentary).
-"""
-
-
-#### Multimodal prompt ####
-
-MIMIC_TEXT_PROMPT = lambda metadata_row, unmatched=False: f"""
-Patient Information:
-- Age: {metadata_row.get('age', 'Not Available')}
-- Sex: {metadata_row.get('sex', 'Not Available')}
-- Race: {metadata_row.get('race', 'Not Available')}
-- ViewPosition: {metadata_row.get('ViewPosition', 'Not Available')}
-- Procedure description: {metadata_row.get('PerformedProcedureStepDescription', 'N/A')}
-- Summary: {metadata_row.get('report', 'N/A')}
-
-Based on the provided patient information and the associated chest X-ray image, does the patien has any condition (Pleural Effusion, Atelectasis, Cardiomegaly, Consolidation, Edema, Enlarged Cardiomediastinum, Fracture, Lung Lesion, Lung Opacity, Pleural Other, Pneumonia, or Pneumothorax)?
-
-""" + (BINARY_INSTRUCTION_3OPT if unmatched else BINARY_INSTRUCTION_2OPT)
-
-### Only Image prompts ###
-
-MIMIC_ONLY_IMAGE_TEXT_PROMPT = lambda unmatched=False: f"""
-Based on the image only, does the patient has any condition (Pleural Effusion, Atelectasis, Cardiomegaly, Consolidation, Edema, Enlarged Cardiomediastinum, Fracture, Lung Lesion, Lung Opacity, Pleural Other, Pneumonia, or Pneumothorax)?
-""" + (IMAGE_ONLY_BINARY_INSTRUCTION_3OPT if unmatched else IMAGE_ONLY_BINARY_INSTRUCTION_2OPT)
-
-### Only Text prompts ###
-MIMIC_ONLY_TEXT_PROMPT = lambda metadata_row, unmatched=False: f"""
-Patient Information:
-- Age: {metadata_row.get('age', 'Not Available')}
-- Sex: {metadata_row.get('sex', 'Not Available')}
-- Race: {metadata_row.get('race', 'Not Available')}
-- ViewPosition: {metadata_row.get('ViewPosition', 'Not Available')}
-- Procedure description: {metadata_row.get('PerformedProcedureStepDescription', 'N/A')}
-- Summary: {metadata_row.get('report', 'N/A')}
-
-Based on the provided patient information, does the patien has any condition (Pleural Effusion, Atelectasis, Cardiomegaly, Consolidation, Edema, Enlarged Cardiomediastinum, Fracture, Lung Lesion, Lung Opacity, Pleural Other, Pneumonia, or Pneumothorax)?
-
-""" + (BINARY_INSTRUCTION_3OPT if unmatched else BINARY_INSTRUCTION_2OPT)
 
 
 ### =================================================== ###
@@ -850,6 +621,80 @@ Diagnostic Checklist. Don't provide the full checklist, just answer the question
 )
 
 
+MIMIC_TARGET_METADATA_COLUMNS = (
+    "age",
+    "sex",
+    "race",
+    "PerformedProcedureStepDescription",
+    "ViewPosition",
+)
+
+
+def MIMIC_TARGET_PROMPT(
+    metadata_row,
+    target,
+    labels,
+    version="default",
+    modality=None,
+    include_report=True,
+):
+    """Build generalized MIMIC prompts while excluding the prediction target."""
+    questions = {
+        "race": "predict the patient's race",
+        "sex": "predict the patient's sex",
+        "class_label": "predict whether the chest X-ray contains any pathology or abnormal finding",
+    }
+    question = questions[target]
+    choices = ", ".join(f'"{label}"' for label in labels)
+    answer_instructions = {
+        "default": f"Choose exactly one of: {choices}. Return only the selected label.",
+        "v1": f"Reply with exactly one label from this list: {choices}. Do not explain.",
+        "v2": f"Respond with a single label: {choices}. No additional commentary.",
+        "v3": f"Final output: exactly one of {choices}. Return only the label.",
+    }
+    answer = answer_instructions.get(version, answer_instructions["default"])
+
+    if modality == "Only_image":
+        image_prompts = {
+            "default": f"Using only the chest X-ray, {question}.",
+            "v1": f"Examine the chest X-ray carefully, then {question}.",
+            "v2": f"=== IMAGE REVIEW REQUEST ===\nUsing the chest X-ray only, {question}.",
+            "v3": f"You are performing a structured chest X-ray review.\nUsing only the image, {question}.",
+        }
+        return f"{image_prompts.get(version, image_prompts['default'])}\n\n{answer}"
+
+    metadata_lines = [
+        f"- {column}: {metadata_row[column]}"
+        for column in MIMIC_TARGET_METADATA_COLUMNS
+        if column != target and column in metadata_row and pd.notna(metadata_row[column])
+    ]
+    metadata = "\n".join(metadata_lines) or "- No metadata available"
+    report = metadata_row.get("report") if include_report else None
+    report_block = f"\n\nRadiology report:\n{report}" if pd.notna(report) and report else ""
+    prompts = {
+        "default": (
+            f"Patient information:\n{metadata}{report_block}\n\n"
+            f"Using the provided information and associated chest X-ray, {question}."
+        ),
+        "v1": (
+            "You are assisting in a chest radiology review task.\n\n"
+            f"Review these patient details:\n{metadata}{report_block}\n\n"
+            f"Examine the available inputs and {question}."
+        ),
+        "v2": (
+            "=== CHEST RADIOLOGY REVIEW REQUEST ===\n\n"
+            f"Case information:\n{metadata}{report_block}\n\n"
+            f"Determine the answer and {question}."
+        ),
+        "v3": (
+            "You are performing a structured chest X-ray review.\n\n"
+            f"Patient file:\n{metadata}{report_block}\n\n"
+            f"Review the available inputs and {question}."
+        ),
+    }
+    return f"{prompts.get(version, prompts['default'])}\n\n{answer}"
+
+
 
 ### ++++++++++++++++++++++ ###
 #### History-based prompt ####
@@ -1009,4 +854,3 @@ Checklist (evaluate on the image; use text as context only). Don't provide the f
     base_prompt += HISTORY_V3_INSTRUCTION_3OPT if unmatched else HISTORY_V3_INSTRUCTION_2OPT
     
     return base_prompt.strip()
-

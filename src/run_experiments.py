@@ -1,29 +1,84 @@
-from src.models import (
-    load_qwen2_vl,
-    load_llava,
-    load_pali_gemma,
-    load_janus_pro,
-    load_biomedgpt,
-    load_llava_med,
-    load_maira2,
-    load_medgemma,
-    load_chexagent,
-    load_llama3_2,
-    load_openai,
-    load_gpt_oss,
-    load_gemini,
-    load_claude,
-    load_grok,
-    load_cohere,
-)
-from src.inference import predict_dataset
+from src.inference import predict_dataset_batch
+from src.vlm import create_vlm
 
 import os, re
 import pandas as pd
 import torch
 from tqdm import tqdm
 import random
-import traceback
+
+
+def _chunks(items, batch_size):
+    if batch_size < 1:
+        raise ValueError("batch_size must be at least 1.")
+    for start in range(0, len(items), batch_size):
+        yield items[start:start + batch_size]
+
+
+def _run_request_batch(
+    requests,
+    model,
+    *,
+    batch_size,
+    dataset,
+    version,
+    return_attention,
+    return_logits,
+    p_yes_and_no,
+    unmatched,
+    tokens,
+    priority_img,
+):
+    outputs = []
+    for batch in _chunks(requests, batch_size):
+        error = None
+        try:
+            predictions = predict_dataset_batch(
+                [request["input_row"] for request in batch],
+                model,
+                return_attention=return_attention,
+                return_logits=return_logits,
+                dataset=dataset,
+                modalities=[request.get("modality") for request in batch],
+                p_yes_and_no=p_yes_and_no,
+                originals=[request.get("original", False) for request in batch],
+                unmatched=unmatched,
+                history_cols_to_use=[
+                    request.get("history_cols_to_use") for request in batch
+                ],
+                version=version,
+                tokens=tokens,
+                priority_img=priority_img,
+            )
+            outputs.extend(zip(batch, predictions))
+        except Exception as exc:
+            error = exc
+        if error is not None:
+            print(f"Batch inference failed: {error}")
+            torch.cuda.empty_cache()
+            if len(batch) > 1:
+                print("Retrying failed batch one item at a time.")
+                outputs.extend(
+                    _run_request_batch(
+                        batch,
+                        model,
+                        batch_size=1,
+                        dataset=dataset,
+                        version=version,
+                        return_attention=return_attention,
+                        return_logits=return_logits,
+                        p_yes_and_no=p_yes_and_no,
+                        unmatched=unmatched,
+                        tokens=tokens,
+                        priority_img=priority_img,
+                    )
+                )
+            else:
+                raise RuntimeError(
+                    "Inference failed for an individual request; refusing to save "
+                    "an incomplete result file."
+                ) from error
+    return outputs
 
 
 def _normalize_versions(versions):
@@ -48,91 +103,6 @@ def _normalize_versions(versions):
 def _safe_version_tag(version):
     """Sanitize version string for use in filenames."""
     return re.sub(r"[^A-Za-z0-9._-]+", "-", str(version))
-
-
-def _load_model_and_processor(model_name, model_id, quantization, use_flash_attention, 
-                               return_attention, return_logits, conv_mode="mistral_instruct"):
-    """
-    Load model and processor based on model type.
-    
-    Args:
-        model_name: Name/identifier of the model
-        model_id: Model ID for loading
-        quantization: Quantization settings
-        use_flash_attention: Whether to use flash attention
-        return_attention: Whether to return attention weights
-        return_logits: Whether to return logits
-        conv_mode: Conversation mode for certain models
-    
-    Returns:
-        tuple: (model, processor)
-    """
-    if "qwen2" in model_name:
-        return load_qwen2_vl(quantization=quantization, use_flash_attention=use_flash_attention, 
-                            model_id=model_id, return_attention=return_attention, return_logits=return_logits)
-    
-    elif "llava" in model_name and (not ("llava_med" in model_name) and not("llava-med" in model_name)):
-        return load_llava(model_id=model_id, quantization=quantization, use_flash_attention=use_flash_attention,
-                         return_attention=return_attention, return_logits=return_logits)
-    
-    elif "paligemma2" in model_name:
-        return load_pali_gemma(model_id=model_id, quantization=quantization,
-                              return_attention=return_attention, return_logits=return_logits)
-    
-    elif "janus" in model_name:
-        return load_janus_pro(model_id=model_id, quantization=quantization,
-                             return_attention=return_attention, return_logits=return_logits)
-    
-    elif "biomedgpt" in model_name:
-        return load_biomedgpt(model_id=model_id, quantization=quantization,
-                             return_attention=return_attention, return_logits=return_logits)
-    
-    elif "llava_med" in model_name or "llava-med" in model_name:
-        print("Using llava-med")
-        return load_llava_med(model_id=model_id, quantization=quantization,
-                             return_attention=return_attention, return_logits=return_logits, conv_mode=conv_mode)
-    
-    elif "maira-2" in model_name:
-        return load_maira2(model_id=model_id, quantization=quantization,
-                          return_attention=return_attention, return_logits=return_logits)
-    
-    elif "medgemma" in model_name:
-        return load_medgemma(model_id=model_id, quantization=quantization,
-                            return_attention=return_attention, return_logits=return_logits,
-                            use_flash_attention=use_flash_attention)
-    
-    elif "chexagent" in model_name:
-        model, processor, _ = load_chexagent(model_id=model_id, quantization=quantization,
-                                            return_attention=return_attention, return_logits=return_logits)
-        return model, processor
-    
-    elif "llama3" in model_name:
-        return load_llama3_2(model_id=model_id, quantization=quantization,
-                            return_attention=return_attention, return_logits=return_logits)
-    
-    elif "openai" in model_id or "gpt-5" in model_id or "gpt-4" in model_id:
-        return load_openai(model_id=model_name, return_logits=return_logits)
-    
-    elif "gpt-oss" in model_name or "gpt_oss" in model_name:
-        return load_gpt_oss(model_id=model_id, quantization=quantization,
-                           return_attention=return_attention, return_logits=return_logits)
-    
-    elif "gemini" in model_name:
-        return load_gemini(model_id=model_id, return_logits=return_logits)
-    
-    elif "claude" in model_name:
-        return load_claude(model_id=model_id, return_logits=return_logits)
-    
-    elif "grok" in model_name:
-        return load_grok(model_id=model_id, return_logits=return_logits)
-    
-    elif "cohere" in model_name or "command" in model_name:
-        return load_cohere(model_id=model_id, return_logits=return_logits)
-    
-    else:
-        raise ValueError(f"Model type not supported: {model_name}, only 'qwen2', 'llava', 'paligemma2', "
-                        f"'janus', 'biomedgpt', 'llava_med', 'maira-2', 'medgemma', 'chexagent', 'llama3', "
-                        f"'openai', 'gpt-oss', 'gemini', 'claude', 'grok', and 'cohere' are supported")
 
 
 def _create_result_dict(row, store_columns, label, prediction, p_yes, p_no, p_Yes, p_No, version, prob_dict=None, **extra_fields):
@@ -205,7 +175,7 @@ def _save_results(results_df, save_mode, all_results, model_output_dir, base_fil
 
 
 def generate_predictions_models_base(model_dict, metadata_test, quantization=None, return_attention=True, return_logits=True, dataset="medeval", store_columns=["filename", "age", "sex", "gender", "race", "ethnicity", "language", "maritalstatus"], label="glaucoma", conv_mode="mistral_instruct", use_flash_attention=True, p_yes_and_no=True, unmatched=False, 
-                                     history_cols=['prior_report'], versions=None, tokens=None, priority_img=False):
+                                     history_cols=['prior_report'], versions=None, tokens=None, priority_img=False, batch_size=1):
 
     # Results directory
     results_dir = "results"
@@ -223,8 +193,7 @@ def generate_predictions_models_base(model_dict, metadata_test, quantization=Non
         #    model_use_flash = False
         #    print(f"Note: Disabling flash attention for {model_name} on history task to avoid CUDA alignment errors")
         
-        # Load the model and processor based on model type
-        model, processor = _load_model_and_processor(
+        model = create_vlm(
             model_name, model_id, quantization, model_use_flash,
             return_attention, return_logits, conv_mode
         )
@@ -248,85 +217,64 @@ def generate_predictions_models_base(model_dict, metadata_test, quantization=Non
         
         # Iterate over versions
         for version in versions_list:
-        
-            # Predict and save results
-            results = []
-            for index, row in tqdm(metadata_test.iterrows(), total=len(metadata_test), desc=f"Predicting with {model_name} | version={version}"):
-
-                original_ops = [True, False]
-                
-                for original in original_ops:
-                    if (not original) and ('valse' not in dataset) and ('history' not in dataset):
-                        continue
-                    
-                    # If using history and multiple history columns are provided aterate over them for the prompt
-                    if ('history' in dataset) and (not original):
-                        if history_cols is None:
-                            raise ValueError("history_cols must be provided if using history in the dataset name")
-                        
-                        history_cols_to_use = []
-                        # shuffle the history columns to use a different order each time
-                        random.shuffle(history_cols)
-                        
-                        for i, history_column in enumerate(history_cols):
-                            history_cols_to_use.append(history_column)
-                            
-                            try:
-                                # Get prediction using the modified row
-                                prediction, _, _, _, p_yes, p_no, p_Yes, p_No, prob_dict = predict_dataset(
-                                    row, model=model, processor=processor, quantization=quantization,
-                                    return_attention=return_attention, return_logits=return_logits, dataset=dataset,
-                                    original=original, p_yes_and_no=p_yes_and_no, unmatched=unmatched,
-                                    history_cols_to_use=history_cols_to_use, version=version, tokens=tokens, priority_img=priority_img
-                                )
-
-                            except Exception as e:
-                                error_msg = str(e)
-                                print(f"Error predicting with {model_name} on index {index}: {e}")
-                                # traceback.print_exc()
-                                torch.cuda.empty_cache()
-                                # Skip this history iteration and continue with next one
-                                continue
-                                
-                            if index % 100 == 0:
-                                print(f"File: {row['filepath']} | v={version} | Prediction: {prediction}")
-                            
-                            aux_dict = _create_result_dict(
-                                row, store_columns, label, prediction, p_yes, p_no, p_Yes, p_No, version, prob_dict,
-                                original=original if original else history_column if i == 0 else ','.join(history_cols_to_use),
-                                history_length=i + 1 if not original else 0
-                            )
-                            results.append(aux_dict)
-                            
-                    else:
-                        # Non-history path
-                        try:
-                            # Get prediction using the modified row
-                            prediction, _, _, _, p_yes, p_no, p_Yes, p_No, prob_dict = predict_dataset(
-                                row, model=model, processor=processor, quantization=quantization,
-                                return_attention=return_attention, return_logits=return_logits, dataset=dataset,
-                                original=original, p_yes_and_no=p_yes_and_no, unmatched=unmatched, version=version, tokens=tokens, priority_img=priority_img
-                            )
-                            
-                        except Exception as e:
-                            error_msg = str(e)
-                            print(f"Error predicting with {model_name} on index {index}: {e}")
-                            # traceback.print_exc()
-                            
-                            torch.cuda.empty_cache()
-                            
-                            # Skip this sample and continue with next one
-                            continue
-                            
-                        if index % 100 == 0:
-                            print(f"File: {row['filepath']} | v={version} | Prediction: {prediction}")
-                        
-                        aux_dict = _create_result_dict(
-                            row, store_columns, label, prediction, p_yes, p_no, p_Yes, p_No, version, prob_dict,
-                            original=original,
-                            history_length=0
+            requests = []
+            for _, row in metadata_test.iterrows():
+                requests.append(
+                    {"input_row": row, "result_row": row, "original": True, "history_length": 0}
+                )
+                if "history" in dataset:
+                    shuffled_history = list(history_cols or [])
+                    random.shuffle(shuffled_history)
+                    selected = []
+                    for index, history_column in enumerate(shuffled_history):
+                        selected.append(history_column)
+                        requests.append(
+                            {
+                                "input_row": row,
+                                "result_row": row,
+                                "original": False,
+                                "history_cols_to_use": list(selected),
+                                "original_value": (
+                                    history_column if index == 0 else ",".join(selected)
+                                ),
+                                "history_length": index + 1,
+                            }
                         )
-                        results.append(aux_dict)
+
+            results = []
+            batch_outputs = _run_request_batch(
+                requests,
+                model,
+                batch_size=batch_size,
+                dataset=dataset,
+                version=version,
+                return_attention=return_attention,
+                return_logits=return_logits,
+                p_yes_and_no=p_yes_and_no,
+                unmatched=unmatched,
+                tokens=tokens,
+                priority_img=priority_img,
+            )
+            for request, prediction_output in tqdm(
+                batch_outputs, desc=f"Collecting {model_name} | version={version}"
+            ):
+                prediction, _, _, _, p_yes, p_no, p_Yes, p_No, prob_dict = prediction_output
+                results.append(
+                    _create_result_dict(
+                        request["result_row"],
+                        store_columns,
+                        label,
+                        prediction,
+                        p_yes,
+                        p_no,
+                        p_Yes,
+                        p_No,
+                        version,
+                        prob_dict,
+                        original=request.get("original_value", request["original"]),
+                        history_length=request["history_length"],
+                    )
+                )
 
 
             # Convert results to a DataFrame and save
@@ -344,7 +292,7 @@ def generate_predictions_models_base(model_dict, metadata_test, quantization=Non
         # print(f"Predictions for {model_name} saved to {output_csv_path}")
         
         # Clear model from memory
-        del model, processor
+        del model
         torch.cuda.empty_cache()
         
 
@@ -395,7 +343,7 @@ def get_shifted_metadata(current_row, current_label, metadata, label_field, meta
 def generate_predictions_models(model_dict, metadata_test, quantization=None, return_attention=False, return_logits=False, use_flash_attention=False,
                                   dataset="medeval", store_columns=["filename", "age", "sex", "gender", "race", "ethnicity", "language", "maritalstatus"],
                                   text_col="note", image_col="filename", metadata_cols=["age", "sex", "gender", "race", "ethnicity", "language", "maritalstatus"], label="glaucoma", conv_mode="mistral_instruct",
-                                  p_yes_and_no=True, unmatched=False, versions=None, tokens=None, priority_img=False):
+                                  p_yes_and_no=True, unmatched=False, versions=None, tokens=None, priority_img=False, batch_size=1):
     
     
     # Results directory
@@ -409,8 +357,7 @@ def generate_predictions_models(model_dict, metadata_test, quantization=None, re
     for model_id, model_name in tqdm(model_dict.items(), desc="Processing Models"):
         print(f"Loading model: {model_name} ({model_id})")
         
-        # Load the model and processor based on model type
-        model, processor = _load_model_and_processor(
+        model = create_vlm(
             model_name, model_id, quantization, use_flash_attention,
             return_attention, return_logits, conv_mode
         )
@@ -430,63 +377,44 @@ def generate_predictions_models(model_dict, metadata_test, quantization=None, re
         
         # ----- iterate versions -----
         for version in versions_list:
-            
             results = []
-            # For each sample in the test set
-            for index, row in tqdm(metadata_test.iterrows(), total=len(metadata_test), desc=f"Predicting with {model_name} | version={version}"):
-                
-                # None (original), Image shift, Metadata shift, and Text shift.
-                for shift_type in [None, "Image", "Text", "Only_text", "Only_image"]:
-                    # Create a copy of the row so as not to modify the original
+            for shift_type in [None, "Image", "Text", "Only_text", "Only_image"]:
+                requests = []
+                for _, row in metadata_test.iterrows():
                     row_modified = row.copy() if hasattr(row, "copy") else dict(row)
-                    
-                    # Modify the row depending on the shift
                     if shift_type == "Image":
-                        # Replace the image with one from a different class.
-                        # Use the helper function to ensure the new image has a different label.
                         row_modified[image_col] = get_shifted_image(row[image_col], row[label], metadata_test, label, image_col=image_col)
-                        
                     elif shift_type == "Text":
-                        # Replace the text prompt with one from a different class.
-                        # Adjust this as necessary based on your dataset's structure.
                         row_modified = get_shifted_text(row, row[label], metadata_test, label, text_col=text_col)
-                        
-                        # Replace the image with the original image.
                         row_modified[image_col] = row[image_col]
-
-                    # Paligemma2 does not support text-only inputs
-                    if "paligemma2" in model_name and shift_type == "Only_text":
-                        continue
-                    # Janus does not support text-only inputs
-                    if "janus" in model_name and shift_type == "Only_text":
-                        continue
-                    
-                    try:
-                        # Get prediction using the modified row
-                        prediction, _, _, _, p_yes, p_no, p_Yes, p_No, prob_dict = predict_dataset(
-                            row_modified, model=model, processor=processor, quantization=quantization, 
-                            return_attention=return_attention, return_logits=return_logits, dataset=dataset, 
-                            modality=shift_type, p_yes_and_no=p_yes_and_no, unmatched=unmatched, version=version, tokens=tokens, priority_img=priority_img)#, 
-                                                                #text_col=text_col, image_col=image_col, metadata_cols=metadata_cols)
-                    except Exception as e:
-                        error_msg = str(e)
-                        print(f"Error predicting with {model_name} on index {index}: {e}")
-                        # traceback.print_exc()
-                        
-                        torch.cuda.empty_cache()
-                        
-                        # Skip this row if there's an error
-                        continue
-                    
-                    if index % 100 == 0:
-                        print(f"File: {row_modified.get(image_col, 'N/A')} | Shift: {shift_type or 'No'} | v={version} | Pred: {prediction}")
-                    
-                    # Build a dictionary for this evaluation instance
-                    aux_dict = _create_result_dict(
-                        row, store_columns, label, prediction, p_yes, p_no, p_Yes, p_No, version, prob_dict,
-                        shift="No" if shift_type is None else shift_type
+                    requests.append(
+                        {
+                            "input_row": row_modified,
+                            "result_row": row,
+                            "modality": shift_type,
+                        }
                     )
-                    results.append(aux_dict)
+                for request, prediction_output in _run_request_batch(
+                    requests,
+                    model,
+                    batch_size=batch_size,
+                    dataset=dataset,
+                    version=version,
+                    return_attention=return_attention,
+                    return_logits=return_logits,
+                    p_yes_and_no=p_yes_and_no,
+                    unmatched=unmatched,
+                    tokens=tokens,
+                    priority_img=priority_img,
+                ):
+                    prediction, _, _, _, p_yes, p_no, p_Yes, p_No, prob_dict = prediction_output
+                    results.append(
+                        _create_result_dict(
+                            request["result_row"], store_columns, label, prediction,
+                            p_yes, p_no, p_Yes, p_No, version, prob_dict,
+                            shift="No" if shift_type is None else shift_type,
+                        )
+                    )
                     
             # Convert results to a DataFrame and save
             results_df = pd.DataFrame(results)
@@ -500,5 +428,5 @@ def generate_predictions_models(model_dict, metadata_test, quantization=None, re
             print(f"[{model_name}] multi-versions -> {output_csv_path}")
 
         # Clear model from memory
-        del model, processor
+        del model
         torch.cuda.empty_cache()
