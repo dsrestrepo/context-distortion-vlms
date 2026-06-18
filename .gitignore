@@ -159,3 +159,6 @@ notebooks/*
 
 # Ignore results/
 results/*
+
+# Local environment snapshots created before dependency updates
+environment_backups/
